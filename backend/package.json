@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@netlify/functions": "^1.6.0",
+    "dayjs": "^1.11.8",
+    "ics": "^3.1.0",
+    "pg": "^8.11.0"
+  }
+}
