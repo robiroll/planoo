@@ -1,21 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import * as dayjs from 'dayjs'
-import {
-  BsAlt,
-  BsPencil,
-  BsPlus,
-  BsPlusCircle,
-  BsPlusCircleFill,
-  BsLink45Deg,
-  BsShare,
-  BsEnvelope,
-  BsCheck,
-  BsCheck2,
-  BsCheckAll,
-  BsCheckCircle,
-  BsCheckCircleFill,
-} from 'react-icons/bs'
+import { BsPencil, BsPlusCircleFill, BsLink45Deg, BsShare, BsEnvelope, BsCheckCircleFill } from 'react-icons/bs'
 import { LoaderContext } from '../utils/context/useLoader'
 
 import './EventPage.css'
@@ -46,31 +32,30 @@ export const EventPage = () => {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch(`http://localhost:8000/api/events/${id}`)
+
+    fetch(`/.netlify/functions/getEvent?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log({ data })
         if (data.success) {
           setEventData(data)
           setIsLoading(false)
+
           return
         }
+
         setIsLoading(false)
         navigate('/404')
       })
       .catch((err) => {
         console.error(err)
-        // return console.error(err)
       })
   }, [id, navigate, setIsLoading])
 
   const handleAddGuest = async (e) => {
     e.preventDefault()
-    console.log('ADD GUEST')
 
     try {
-      console.log('TRY')
-      const response = await fetch('http://localhost:8000/api/add-guest', {
+      const response = await fetch('/.netlify/functions/addGuest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,18 +63,13 @@ export const EventPage = () => {
         body: JSON.stringify({ id, name }),
       })
 
-      console.log({ response })
-
       if (!response.ok) {
         throw new Error('Error adding guest')
       }
 
       const data = await response.json()
 
-      console.log({ data })
-
       if (data.success) {
-        console.log('SUCCESS')
         setEventData((prev) => {
           if (!prev) {
             return null
@@ -209,8 +189,6 @@ export const EventPage = () => {
       </div>
 
       <div className="mb-4">
-        {/* <h3 className="font-bold">Share the event</h3> */}
-
         <div className="flex gap-3">
           <button
             onClick={handleCopyLink}

@@ -7,15 +7,6 @@ import { Input } from '../components/form/Input/Input'
 export const EditEvent = () => {
   const { id } = useParams<{ id: string }>()
 
-  const [eventData, setEventData] = useState<{
-    id: string
-    title: string
-    description: string
-    start_date: string
-    end_date: string
-    location: string
-  } | null>(null)
-
   const [title, setTitle] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -25,10 +16,9 @@ export const EditEvent = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/events/${id}`)
+    fetch(`/.netlify/functions/getEvent?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setEventData(data)
         setTitle(data.event.title)
         setStartDate(dayjs(data.event.start_date).format('YYYY-MM-DDTHH:mm'))
         setEndDate(dayjs(data.event.end_date).format('YYYY-MM-DDTHH:mm'))
@@ -42,11 +32,8 @@ export const EditEvent = () => {
     event.preventDefault()
 
     try {
-      const response = await fetch('http://localhost:8000/api/edit', {
+      const response = await fetch('/.netlify/functions/editEvent', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ id, title, description, startDate, endDate, location }),
       })
 
@@ -54,7 +41,6 @@ export const EditEvent = () => {
         throw new Error('Error updating event')
       }
 
-      // Navigate to event page with the created event ID
       navigate(`/${id}`)
     } catch (error) {
       console.error(error)

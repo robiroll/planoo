@@ -15,12 +15,18 @@ export const CreateEvent = () => {
     event.preventDefault()
 
     try {
-      const response = await fetch('http://localhost:8000/api/create', {
+      const response = await fetch('/.netlify/functions/createEvent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title, description, startDate, endDate, location }),
+        body: JSON.stringify({
+          title,
+          description,
+          startDate,
+          endDate,
+          location,
+        }),
       })
 
       if (!response.ok) {
@@ -29,7 +35,6 @@ export const CreateEvent = () => {
 
       const data = await response.json()
 
-      // Navigate to event page with the created event ID
       navigate(`/${data.id}`)
     } catch (error) {
       console.error(error)
@@ -39,23 +44,6 @@ export const CreateEvent = () => {
   const handleStartDate = ({ target: { value } }) => {
     setStartDate(value)
     setEndDate(value)
-
-    // const [date, time] = value.split('T')
-    // const [hours, minutes] = time.split(':')
-
-    // const newHours = parseInt(hours) + 1
-
-    // const newEndDate = `${date}T${newHours}:${minutes}`
-
-    // // const newEndDate = new Date(date)
-    // // newEndDate.setHours(parseInt(hours) + 1)
-    // // newEndDate.setMinutes(minutes)
-
-    // // console.log(newEndDate.toISOString().slice(0, 16))
-
-    // // setEndDate(newEndDate.toISOString().slice(0, 16))
-
-    // // console.log(value)
   }
 
   return (
@@ -74,7 +62,6 @@ export const CreateEvent = () => {
               id="start-date"
               value={startDate}
               onChange={handleStartDate}
-              // (e) => setStartDate(e.target.value)}
               type="datetime-local"
               required
             />

@@ -1,0 +1,12 @@
+[dev]
+  command = "yarn dev"
+  publish = "dist"
+  port = 3000
+  targetPort = 4000
+
+[build]
+  command = "yarn build"
+  publish = "dist"
+
+[functions]
+  node_bundler = "esbuild"
