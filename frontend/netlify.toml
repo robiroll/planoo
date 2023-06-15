@@ -15,4 +15,3 @@
   from = "/*"
   to = "/dist/index.html"
   status = 200
-  force = true
