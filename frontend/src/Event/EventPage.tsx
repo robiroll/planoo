@@ -2,10 +2,14 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import { BsPencil, BsPlusCircleFill, BsLink45Deg, BsShare, BsEnvelope, BsCheckCircleFill } from 'react-icons/bs'
 import { LoaderContext } from '../utils/context/useLoader'
 
 dayjs.extend(utc)
+dayjs.extend(timezone)
+
+console.log(dayjs.tz.guess())
 
 import './EventPage.css'
 
@@ -234,6 +238,8 @@ export const EventPage = () => {
       <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">
         Where: {event.location ? event.location : <i className="italic">No location set</i>}
       </p>
+
+      <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">Timezone: {dayjs.tz.guess()}</p>
 
       <h2 className="text-2xl font-bold mb-4">Description</h2>
       <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">{event.description}</p>
