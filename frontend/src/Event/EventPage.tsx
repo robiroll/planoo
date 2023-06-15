@@ -1,8 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { BsPencil, BsPlusCircleFill, BsLink45Deg, BsShare, BsEnvelope, BsCheckCircleFill } from 'react-icons/bs'
 import { LoaderContext } from '../utils/context/useLoader'
+
+dayjs.extend(utc)
 
 import './EventPage.css'
 
@@ -151,8 +154,6 @@ export const EventPage = () => {
     })
   }
 
-  console.log(event.guests)
-
   const eventDescription = event.description?.replace(/\n/g, '<br />') ?? ''
 
   const formattedDescription = `Planoo link: ${window.location.href}%0A%0A${eventDescription}`
@@ -160,20 +161,9 @@ export const EventPage = () => {
 
   const formattedGoogleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${
     event.title
-  }&dates=${dayjs(event.start_date).format('YYYYMMDDTHHmm000Z')}/${dayjs(event.end_date).format(
-    'YYYYMMDDTHHmm000Z',
-  )}&details=${formattedDescription}&location=${location}&sf=true&output=xml`
-
-  console.log(
-    '\n',
-    event.start_date.replace(/-/g, ''),
-    '\n',
-    dayjs(event.start_date).format('YYYYMMDDTHH:mm.000Z'),
-    '\n',
-    dayjs(event.start_date).format(),
-    '\n',
-    dayjs(event.start_date).toISOString(),
-  )
+  }&dates=${dayjs(event.start_date).local().format('YYYYMMDDTHHmm000Z')}/${dayjs(event.end_date)
+    .local()
+    .format('YYYYMMDDTHHmm000Z')}&details=${formattedDescription}&location=${location}&sf=true&output=xml`
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -230,13 +220,13 @@ export const EventPage = () => {
         <div>
           From:{' '}
           <span className="text-gray-300 text-lg mb-8 whitespace-pre-line">
-            {dayjs(event.start_date).format('MMMM D, YYYY h:mm A')}
+            {dayjs(event.start_date).local().format('MMMM D, YYYY h:mm A')}
           </span>
         </div>
         <div>
           To:{' '}
           <span className="text-gray-300 text-lg mb-8 whitespace-pre-line">
-            {dayjs(event.end_date).format('MMMM D, YYYY h:mm A')}
+            {dayjs(event.end_date).local().format('MMMM D, YYYY h:mm A')}
           </span>
         </div>
       </div>
