@@ -6,12 +6,12 @@ import timezone from 'dayjs/plugin/timezone'
 import { BsPencil, BsPlusCircleFill, BsLink45Deg, BsShare, BsEnvelope, BsCheckCircleFill } from 'react-icons/bs'
 import { LoaderContext } from '../utils/context/useLoader'
 
+import './EventPage.css'
+
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-console.log(dayjs.tz.guess())
-
-import './EventPage.css'
+const tz = dayjs.tz.guess()
 
 export const EventPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -165,8 +165,8 @@ export const EventPage = () => {
 
   const formattedGoogleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${
     event.title
-  }&dates=${dayjs(event.start_date).local().format('YYYYMMDDTHHmm000Z')}/${dayjs(event.end_date)
-    .local()
+  }&dates=${dayjs(event.start_date).tz(tz).format('YYYYMMDDTHHmm000Z')}/${dayjs(event.end_date)
+    .tz(tz)
     .format('YYYYMMDDTHHmm000Z')}&details=${formattedDescription}&location=${location}&sf=true&output=xml`
 
   return (
@@ -224,13 +224,13 @@ export const EventPage = () => {
         <div>
           From:{' '}
           <span className="text-gray-300 text-lg mb-8 whitespace-pre-line">
-            {dayjs(event.start_date).local().format('MMMM D, YYYY h:mm A')}
+            {dayjs(event.start_date).tz(tz).format('MMMM D, YYYY h:mm A')}
           </span>
         </div>
         <div>
           To:{' '}
           <span className="text-gray-300 text-lg mb-8 whitespace-pre-line">
-            {dayjs(event.end_date).local().format('MMMM D, YYYY h:mm A')}
+            {dayjs(event.end_date).tz(tz).format('MMMM D, YYYY h:mm A')}
           </span>
         </div>
       </div>
@@ -239,7 +239,7 @@ export const EventPage = () => {
         Where: {event.location ? event.location : <i className="italic">No location set</i>}
       </p>
 
-      <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">Timezone: {dayjs.tz.guess()}</p>
+      <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">Timezone: {tz}</p>
 
       <h2 className="text-2xl font-bold mb-4">Description</h2>
       <p className="text-gray-300 text-lg mb-8 whitespace-pre-line">{event.description}</p>

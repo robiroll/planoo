@@ -6,6 +6,7 @@ import utc from 'dayjs/plugin/utc'
 import { Input } from '../components/form/Input/Input'
 
 dayjs.extend(utc)
+const tz = dayjs.tz.guess()
 
 export const EditEvent = () => {
   const { id } = useParams<{ id: string }>()
@@ -23,8 +24,8 @@ export const EditEvent = () => {
       .then((res) => res.json())
       .then((data) => {
         setTitle(data.event.title)
-        setStartDate(dayjs(data.event.start_date).local().format('YYYY-MM-DDTHH:mm'))
-        setEndDate(dayjs(data.event.end_date).local().format('YYYY-MM-DDTHH:mm'))
+        setStartDate(dayjs(data.event.start_date).tz(tz).format('YYYY-MM-DDTHH:mm'))
+        setEndDate(dayjs(data.event.end_date).tz(tz).format('YYYY-MM-DDTHH:mm'))
         setLocation(data.event.location)
         setDescription(data.event.description)
       })
