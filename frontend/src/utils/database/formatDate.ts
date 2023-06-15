@@ -1,12 +1,7 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
+export const formatDate = (dateUtc: string) => {
+  const [date, time] = dateUtc.split('T')
+  const [year, month, day] = date.split('-')
+  const [hour, minute] = time.split(':')
 
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
-export const formatDate = (date: string, tz: string) => {
-  const baseDate = dayjs(date).tz(tz)
-  const dateArray = [baseDate.year(), baseDate.month(), baseDate.date(), baseDate.hour(), baseDate.minute()]
-  return dateArray
+  return [year, month, day, hour, minute].map((value) => parseInt(value))
 }

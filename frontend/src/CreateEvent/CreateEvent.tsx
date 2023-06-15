@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BsArrowLeft } from 'react-icons/bs'
+
 import { Input } from '../components/form/Input/Input'
+import { formatInputToUtc } from '../utils/temporal'
 
 export const CreateEvent = () => {
   const [title, setTitle] = useState('')
@@ -14,6 +16,9 @@ export const CreateEvent = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    const start = formatInputToUtc(startDate)
+    const end = formatInputToUtc(endDate)
+
     try {
       const response = await fetch('/.netlify/functions/createEvent', {
         method: 'POST',
@@ -23,8 +28,8 @@ export const CreateEvent = () => {
         body: JSON.stringify({
           title,
           description,
-          startDate,
-          endDate,
+          startDate: start,
+          endDate: end,
           location,
         }),
       })

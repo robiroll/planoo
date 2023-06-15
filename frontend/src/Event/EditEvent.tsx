@@ -1,15 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BsArrowLeft } from 'react-icons/bs'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
 import { Input } from '../components/form/Input/Input'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
-
-const tz = dayjs.tz.guess()
+import { formatInputToUtc, formatUtcToInput } from '../utils/temporal'
 
 export const EditEvent = () => {
   const { id } = useParams<{ id: string }>()
@@ -27,8 +20,8 @@ export const EditEvent = () => {
       .then((res) => res.json())
       .then((data) => {
         setTitle(data.event.title)
-        setStartDate(dayjs(data.event.start_date).tz(tz).format('YYYY-MM-DDTHH:mm'))
-        setEndDate(dayjs(data.event.end_date).tz(tz).format('YYYY-MM-DDTHH:mm'))
+        setStartDate(formatUtcToInput(data.event.start_date))
+        setEndDate(formatUtcToInput(data.event.end_date))
         setLocation(data.event.location)
         setDescription(data.event.description)
       })
@@ -38,10 +31,20 @@ export const EditEvent = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    const start = formatInputToUtc(startDate)
+    const end = formatInputToUtc(endDate)
+
     try {
       const response = await fetch('/.netlify/functions/editEvent', {
         method: 'POST',
-        body: JSON.stringify({ id, title, description, startDate, endDate, location }),
+        body: JSON.stringify({
+          id,
+          title,
+          description,
+          startDate: start,
+          endDate: end,
+          location,
+        }),
       })
 
       if (!response.ok) {
