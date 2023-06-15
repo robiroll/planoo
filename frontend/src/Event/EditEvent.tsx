@@ -3,9 +3,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BsArrowLeft } from 'react-icons/bs'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import { Input } from '../components/form/Input/Input'
 
 dayjs.extend(utc)
+dayjs.extend(timezone)
+
 const tz = dayjs.tz.guess()
 
 export const EditEvent = () => {
