@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { BsPencil, BsPlusCircleFill, BsLink45Deg, BsShare, BsEnvelope, BsCheckCircleFill } from 'react-icons/bs'
 import { LoaderContext } from '../utils/context/useLoader'
 

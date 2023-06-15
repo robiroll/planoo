@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { BsArrowLeft } from 'react-icons/bs'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { Input } from '../components/form/Input/Input'
 
 export const EditEvent = () => {
