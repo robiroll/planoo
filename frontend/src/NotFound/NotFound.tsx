@@ -13,7 +13,6 @@ export const NotFound = () => {
     const pageY = document.body.clientHeight
     setPageX(pageX)
     setPageY(pageY)
-    console.log({ pageX, pageY })
 
     const handleMouseMove = (event) => {
       setMousePos({ x: event.clientX, y: event.clientY })
@@ -31,8 +30,6 @@ export const NotFound = () => {
 
   const mouseX = mousePos.x / -pageX
   const xAxis = -mouseX * 100 - 100
-
-  console.log({ xAxis, yAxis })
 
   return (
     <div className="flex flex-col items-center justify-center text-white">
