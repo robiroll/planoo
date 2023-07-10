@@ -12,8 +12,6 @@
   node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/event/*"
-  to = "/:splat"
-  status = 302
-  force = true
-
+  from = "/*"
+  to = "/dist/index.html"
+  status = 200
