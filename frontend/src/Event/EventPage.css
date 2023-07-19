@@ -1,3 +1,7 @@
 .input-guest {
   width: calc(100% - 44px);
 }
+
+#link-copied {
+  width: 220px;
+}

@@ -14,6 +14,8 @@ export const EventPage = () => {
   const [name, setName] = useState('')
   const [isLinkCopied, setIsLinkCopied] = useState(false)
   const timeoutRef = useRef(null)
+  const copyUrl = window.location.href
+  const displayUrl = window.location.host + window.location.pathname
 
   const [eventData, setEventData] = useState<{
     id: string
@@ -129,7 +131,26 @@ export const EventPage = () => {
   }
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href)
+    const copyText = document.createElement('input')
+    document.body.appendChild(copyText)
+    copyText.setAttribute('id', 'copyTextId')
+    copyText.setAttribute('value', copyUrl)
+    copyText.select()
+
+    // ios
+    copyText.setSelectionRange(0, copyText.value.length)
+
+    try {
+      if (!document.execCommand('copy')) {
+        throw new Error(`failed to execute copy command`)
+      }
+    } catch (e) {
+      console.log('Warning! Could not copy to clipboard.', e)
+    }
+
+    copyText.value = displayUrl
+    copyText.select()
+    document.body.removeChild(copyText)
     setIsLinkCopied(true)
 
     timeoutRef.current = setTimeout(() => {
